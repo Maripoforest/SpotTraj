@@ -6,12 +6,16 @@ from pylab import *
 
 xcen = 0.9658
 ycen = 0.7558
-time = []
-x = [[],[],[]]
-y = [[],[],[]]
+colors = ['orange', 'blue', 'purple', 'pink', 'green', 'brown']
+# filename = ['ori/ori1.csv', 'ori/ori2.csv', 'ori/ori3.csv']
+filename = ['data/xinyu_ori0.csv', 'data/xinyu_ori1.csv', 'data/xinyu_step.csv', 'data/xinyu_gaze.csv', 'data/xinyu_tilt.csv']
+# filename = ['data/rongyu_ori0.csv', 'data/rongyu_ori1.csv', 'data/rongyu_step.csv', 'data/rongyu_gaze.csv']
+x = []
+y = []
+for i in range(len(filename)):
+    x.append([])
+    y.append([])
 d = []
-colors = ['orange', 'blue', 'purple', 'pink']
-filename = ['ori/ori1.csv', 'ori/ori2.csv', 'ori/ori3.csv']
 for i in range(len(filename)):
     file = open(filename[i])
     csvreader = csv.reader(file)
@@ -27,7 +31,7 @@ for i in range(len(filename)):
         if d_temp < distance:
             distance = d_temp
     d.append(distance)
-print(d)
+print(len(d))
 figure(dpi = 150)
 ax = gca()
 ax.spines['right'].set_color('none')
@@ -38,9 +42,9 @@ ax.yaxis.set_ticks_position('left')
 ax.spines['left'].set_position(('data', 0))
 scatter(0,0, color = 'red', linewidth=2.5, linestyle='--')
 cir = []
-for i in range(len(x)):
-    cir.append(Circle(xy = (0.0, 0.0), radius = d[i], alpha = 0.3 * float(d[i]/max(d)), color = colors[i]))
+for i in range(len(d)):
+    cir.append(Circle(xy = (0.0, 0.0), radius = d[i], alpha = 0.4 * float(1.1 - d[i]/max(d)), color = 'red'))
     ax.add_patch(cir[i])
-    plot(y[i], x[i], color = colors[i], label = 'ori'+str(i))
+    plot(y[i], x[i], color = colors[i], label = filename[i])
 legend()
 show()
